@@ -1,0 +1,21 @@
+version: "3"
+
+services:
+    db:
+        image: postgres:15.0
+        container_name: "spring-demo-db"
+        env_file:
+            -   docker.env
+        volumes:
+            -   spring-demo-practice:/var/lib/postgresql/data
+            - ./docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+        ports:
+            -   "5435:5432"
+        healthcheck:
+            test: "pg_isready -U springUser -d springDB"
+            interval: 5s
+            timeout: 5s
+            retries: 3
+
+volumes:
+    spring-demo-practice:
